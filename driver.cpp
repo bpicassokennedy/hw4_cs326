@@ -2,25 +2,49 @@
 #include <fstream>
 
 #define INPUT_FILE "inputFile.txt"
+#define MAX 100
+
+void readFile(int& rows, int& columns, std::string fileName, int arr[][MAX]);
+void rotateArray(int rows, int columns, int arr[][MAX], int rotatedArr[][MAX]);
+void printArray(int rows, int columns, int arr[][MAX]);
 
 int main(){
-    std::ifstream inFile(INPUT_FILE);
+    int rows = 0, columns = 0;
+    int originalArr[MAX][MAX]; //max row + column count
+
+    readFile(rows, columns, INPUT_FILE, originalArr);
+    
+    std::cout << "original 2d array: " << std::endl;
+    printArray(rows, columns, originalArr);
+
+    int newArr[MAX][MAX];
+    std::cout << std::endl << "rotated 2d array: " << std::endl;
+    rotateArray(rows, columns, originalArr, newArr);
+    printArray(columns, rows, newArr);
+}
+
+void readFile(int& rows, int& columns, std::string fileName, int arr[][MAX]){
+    std::ifstream inFile(fileName);
     if(!inFile){
-        std::cout << "error opening file!" << std::endl;
+        std::cerr << "error opening file: " << fileName << std::endl;
+        return;
     }
-
-    readFile(inFile);
-}
-
-void readFile(std::ifstream& inputFile){
     std::string line;
-    while(inputFile.good()){
-        getline(inputFile, line);
-        
+    while(inFile.good() && rows < MAX && columns < MAX){
+        int numColumns = 0;
+        getline(inFile, line);
+        for(int i = 0; i < line.length(); i++){
+            arr[rows][numColumns] = line[i] - '0';
+            numColumns++;
+        }
+        if(rows == 0){
+            columns = numColumns;
+        }
+        rows++;
     }
 }
 
-void rotateArray(int rows, int columns, int arr[][columns], int rotatedArr[][rows]){
+void rotateArray(int rows, int columns, int arr[][MAX], int rotatedArr[][MAX]){
     for(int i = 0; i < rows; i ++){
         for(int j = 0; j < columns; j++){
             rotatedArr[j][rows - i - 1] = arr[i][j]; //first column becomes the first row, second column becomes the second row, and so on and so forth
@@ -28,10 +52,11 @@ void rotateArray(int rows, int columns, int arr[][columns], int rotatedArr[][row
     }
 }
 
-void printArray(int rows, int columns, int arr[][columns]){
+void printArray(int rows, int columns, int arr[][MAX]){
     for(int i = 0; i < rows; i++){
         for(int j = 0; j < columns; j++){
-            std::cout << arr[i][j] << std::endl;
+            std::cout << arr[i][j] << " ";
         }
+        std::cout << std::endl;
     } 
 }
