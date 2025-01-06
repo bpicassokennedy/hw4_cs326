@@ -42,7 +42,7 @@ void readFile(int& rows, int& columns, std::string fileName, int arr[][MAX]){
             arr[rows][numColumns] = line[i] - '0';
             numColumns++;
         }
-        if(rows == 0){
+        if(numColumns > columns){
             columns = numColumns;
         }
         rows++;
