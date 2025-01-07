@@ -10,7 +10,7 @@
 #define MAX 100
 
 void readFile(int& rows, int& columns, std::string fileName, int arr[][MAX]);
-void rotateArray(int rows, int columns, int arr[][MAX], int rotatedArr[][MAX]);
+void rotateArray(int& rows, int& columns, int arr[][MAX], int rotatedArr[][MAX]);
 void printArray(int rows, int columns, int arr[][MAX]);
 
 int main(){
@@ -19,13 +19,13 @@ int main(){
 
     readFile(rows, columns, INPUT_FILE, originalArr); //reads input file and stores its contents in a 2d array
     
-    std::cout << "original 2d array: " << std::endl;
+    std::cout << "Original: " << std::endl;
     printArray(rows, columns, originalArr); //prints given 2d array to the terminal 
 
     int newArr[MAX][MAX];
-    std::cout << std::endl << "rotated 2d array: " << std::endl;
+    std::cout << std::endl << "Rotated: " << std::endl;
     rotateArray(rows, columns, originalArr, newArr); //rotates any given 2d array 90 degrees clockwise
-    printArray(columns, rows, newArr);
+    printArray(rows, columns, newArr);
 }
 
 void readFile(int& rows, int& columns, std::string fileName, int arr[][MAX]){
@@ -49,12 +49,15 @@ void readFile(int& rows, int& columns, std::string fileName, int arr[][MAX]){
     }
 }
 
-void rotateArray(int rows, int columns, int arr[][MAX], int rotatedArr[][MAX]){
+void rotateArray(int& rows, int& columns, int arr[][MAX], int rotatedArr[][MAX]){
     for(int i = 0; i < rows; i ++){
         for(int j = 0; j < columns; j++){
             rotatedArr[j][rows - i - 1] = arr[i][j]; //first column becomes the first row, second column becomes the second row, and so on and so forth!
         }
     }
+    int temp = rows;
+    rows = columns;
+    columns = temp;
 }
 
 void printArray(int rows, int columns, int arr[][MAX]){
